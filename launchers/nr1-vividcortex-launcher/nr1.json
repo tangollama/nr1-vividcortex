@@ -1,0 +1,7 @@
+{
+    "schemaType": "LAUNCHER",
+    "id": "nr1-vividcortex-launcher",
+    "description": "Describe me",
+    "displayName": "Nr1Vividcortex",
+    "rootNerdletId": "nr1-vividcortex-nerdlet"
+}
