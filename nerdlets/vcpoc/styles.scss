@@ -1,0 +1,78 @@
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+}
+.configBtn {
+    float: right;
+    margin-top: 20px;
+}
+.row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 10px;
+    .card {
+        height: 300px;
+        width: 33%;
+        & > div {
+            height: 280px;
+            margin-right: 10px;
+        }
+    }
+    .doubleCard {
+        width: 66% !important;
+    }
+}
+.profiler {
+    h4 {
+        margin: 20px;
+        a:link {
+            color: #555;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.vc-profiler__digest {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 400px;
+    display: block;
+}
+
+.vc-row, .nr1-vcpoc .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #e5e5e5;
+}
+.vc-row td {
+    padding: .25rem;
+    div {
+        font-size: 13px;
+    }
+}
+.vc-error {
+    color: #eb5757;
+    padding: .25rem;
+}
+
+.vc-cardrow {
+    .card-body {
+        h2 {
+            font-size: 1em;
+            color: #2cafb8;
+        }
+    }
+
+    .card {
+        border: none;
+    }
+}

@@ -1,6 +1,8 @@
 {
     "schemaType": "NERDLET",
     "id": "nr1-vividcortex-nerdlet",
-    "description": "Describe me",
-    "displayName": "Nr1Vividcortex"
+    "description": "Nerdlet context that provides host based integration with VividCortex",
+    "displayName": "VividCortex 3P",
+    "entities": [{ "domain": "INFRA",  "type": "HOST" }],
+    "actionCategory": "monitor"
 }
