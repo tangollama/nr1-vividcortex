@@ -5,94 +5,94 @@ import { fetchQueries } from '../lib/api'
 
 export default class VCChart extends React.Component {
   static propTypes = {
-      metric: PropTypes.any.isRequired,
-      vcHosts: PropTypes.array,
-      osHost: PropTypes.object,
-      userToken: PropTypes.string.isRequired,
-      from: PropTypes.number.isRequired,
-      until: PropTypes.number.isRequired,
-      entity: PropTypes.object.isRequired
+    metric: PropTypes.any.isRequired,
+    vcHosts: PropTypes.array,
+    osHost: PropTypes.object,
+    userToken: PropTypes.string.isRequired,
+    from: PropTypes.number.isRequired,
+    until: PropTypes.number.isRequired,
+    entity: PropTypes.object.isRequired
   }
 
   constructor(props) {
-      super(props)
-      this.state = {
-      chartData: null
-      };
-      this.refresher = null;
+    super(props)
+    this.state = {
+    chartData: null
+    };
+    this.refresher = null;
   }
 
   async refreshData() {
 
-    const params = {
-      from: this.props.from,
-      until: this.props.until,
-      separateHosts: 0
-    };
+  const params = {
+    from: this.props.from,
+    until: this.props.until,
+    separateHosts: 0
+  };
 
-    const response = await fetchQueries(params, this.props.vcHosts.map(host => host.id), this.props.metric, this.props.userToken);
-    const chartData = [];
+  const response = await fetchQueries(params, this.props.vcHosts.map(host => host.id), this.props.metric, this.props.userToken);
+  const chartData = [];
 
-    response.forEach(data => {
-        const timeseries = data.series.map((value, ind) => ({
-          x: params.from + ind * params.samplesize,
-          y: value,
-        }));
-    });
+  response.forEach(data => {
+    const timeseries = data.series.map((value, ind) => ({
+      x: params.from + ind * params.samplesize,
+      y: value,
+    }));
+  });
 
-    chartData.push({
-        metadata: {
-          id: data.metric,
-          label: data.metric,
-          color: red,
-          viz: 'main',
-          unitsData: {
-            y: 'count',
-            x: 'timestamp'
-          }
-        },
-        data: timeseries
-    });
-    this.setState({chartData}, () => {
-        this.refresher = setTimeout(() => {
-            this.refreshData();
-        }, 60000);
-    })
+  chartData.push({
+    metadata: {
+      id: data.metric,
+      label: data.metric,
+      color: red,
+      viz: 'main',
+      unitsData: {
+      y: 'count',
+      x: 'timestamp'
+      }
+    },
+    data: timeseries
+  });
+  this.setState({chartData}, () => {
+    this.refresher = setTimeout(() => {
+      this.refreshData();
+    }, 60000);
+  })
   }
 
   async componentDidMount() {
-    this.refreshData();
+  this.refreshData();
   }
 
   componentWillUnmount() {
-    if (this.refresher) {
-        clearTimeout(this.refresher)
-    }
+  if (this.refresher) {
+    clearTimeout(this.refresher)
+  }
   }
 
   shouldComponentUpdate(nextProps) {
-      const { entity, from, until } = this.props
-      if ((entity && entity.id != nextProps.entity.id)
-          || (from != nextProps.from)
-          || (until != nextProps.until)) {
-        if  (this.refresher) {
-            clearTimeout(this.refresher)
-        }
-        this.refreshData()
-      }
-      return true;
+    const { entity, from, until } = this.props
+    if ((entity && entity.id != nextProps.entity.id)
+      || (from != nextProps.from)
+      || (until != nextProps.until)) {
+    if  (this.refresher) {
+      clearTimeout(this.refresher)
+    }
+    this.refreshData()
+    }
+    return true;
   }
 
   render() {
-      const { chartData } = this.state;
-      if (!chartData) {
-        return <Spinner fillContainer style={{ height: '250px'}} />
-      }
-      return (
-        <LineChart
-          data={chartData}
-          style={{height: '250px', width: '100%'}}
-          />
-      );
+    const { chartData } = this.state;
+    if (!chartData) {
+    return <Spinner fillContainer style={{ height: '250px'}} />
+    }
+    return (
+    <LineChart
+      data={chartData}
+      style={{height: '250px', width: '100%'}}
+      />
+    );
   }
 }
