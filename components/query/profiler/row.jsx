@@ -12,7 +12,6 @@ export default class ProfilerRow extends React.Component {
       digest: props.query.metric,
       queryId: metricToQuery(props.query.metric)
     }
-    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount() {
@@ -38,9 +37,6 @@ export default class ProfilerRow extends React.Component {
             target="_blank"
             rel="noreferrer noopener"
             title={digest}
-            onClick={(evt) => {
-              this.handleClick(evt, href, digest, query)
-            }}
           >
             {digest}
           </a>

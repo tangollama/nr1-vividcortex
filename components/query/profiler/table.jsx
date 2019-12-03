@@ -2,7 +2,7 @@ import React from 'react'
 import ProfilerRow from "./row"
 
 export default ({ queries, from, until, vcHosts, entity }) => (
-  <table>
+  <table style={{ width: '95%'}}>
     <thead>
       <tr>
         <th>#</th>

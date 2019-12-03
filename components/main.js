@@ -27,28 +27,28 @@ export default class VCMain extends React.PureComponent {
       <ChartGroup>
         <Grid>
           <GridItem columnSpan={12}><VCHeader hideButton={!vcHosts} callbacks={callbacks} /></GridItem>
-          {vcHosts && <React.Fragment><GridItem columnSpan={4}>
+          {vcHosts && <React.Fragment><GridItem className="chartPanel"  columnSpan={4}>
             <HeadingText tagType={HeadingText.TAG_TYPE.H2}>Total query throughput</HeadingText>
             <VCChart
               metric="host.totals.queries.tput"
               {...this.props}
             />
           </GridItem>
-          <GridItem columnSpan={4}>
+          <GridItem className="chartPanel" columnSpan={4}>
             <HeadingText tagType={HeadingText.TAG_TYPE.H2}>Query latency p99</HeadingText>
             <VCChart
               metric="host.totals.queries.p99_latency_us"
               {...this.props}
             />
           </GridItem>
-          <GridItem columnSpan={4}>
+          <GridItem className="chartPanel" columnSpan={4}>
             <HeadingText tagType={HeadingText.TAG_TYPE.H2}>Total query time</HeadingText>
             <VCChart
               metric="host.totals.queries.time_us"
               {...this.props}
             />
           </GridItem>
-          <GridItem columnSpan={6}>
+          <GridItem className="chartPanel" columnSpan={6}>
             <HeadingText tagType={HeadingText.TAG_TYPE.H2}>Current active and idle connections</HeadingText>
             <VCChart
               metric={[
@@ -61,7 +61,7 @@ export default class VCMain extends React.PureComponent {
               {...this.props}
             />
           </GridItem>
-          <GridItem columnSpan={6}>
+          <GridItem className="chartPanel" columnSpan={6}>
             <HeadingText tagType={HeadingText.TAG_TYPE.H2}>Operations per second</HeadingText>
             <VCChart
               metric={[
@@ -74,7 +74,7 @@ export default class VCMain extends React.PureComponent {
               {...this.props}
             />
           </GridItem>
-          <GridItem columnSpan={12}>
+          <GridItem className="chartPanel" columnSpan={12}>
             <HeadingText tagType={HeadingText.TAG_TYPE.H1}><a href={buildProfilerURL({ from, until, vcHosts })} target="_blank" rel="nooopener noreferrer">Most time consuming queries</a></HeadingText>
             <QueryProfiler {...this.props} />
           </GridItem></React.Fragment>}

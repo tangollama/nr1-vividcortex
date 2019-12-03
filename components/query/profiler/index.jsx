@@ -62,7 +62,8 @@ export default class QueryProfiler extends React.Component {
       fetchQueries(
         {from, until},
         allHostsIDs,
-        metrics
+        metrics,
+        this.props.userToken
       ).then((result) => {
         // set the query Ids to every item of the result
         result.forEach(item => item.id = item.metric.split('.')[3])

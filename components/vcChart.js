@@ -1,7 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { LineChart, Spinner } from 'nr1'
-import { fetchQueries } from '../lib/api'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { LineChart, Spinner } from 'nr1';
+import { fetchQueries } from '../lib/api';
+import ColorManager from '../lib/color-manager';
 
 export default class VCChart extends React.Component {
   static propTypes = {
@@ -20,44 +21,46 @@ export default class VCChart extends React.Component {
     chartData: null
     };
     this.refresher = null;
+    this.colorManager = new ColorManager();
   }
 
   async refreshData() {
+    const params = {
+      from: this.props.from,
+      until: this.props.until,
+      separateHosts: 0
+    };
 
-  const params = {
-    from: this.props.from,
-    until: this.props.until,
-    separateHosts: 0
-  };
+    const response = await fetchQueries(params, this.props.vcHosts.map(host => host.id), this.props.metric, this.props.userToken);
+    const chartData = [];
+    console.log(response);
+    //debugger;
+    response.forEach((data, i) => {
+      const timeseries = data.series.map((value, ind) => ({
+        x: params.from + ind * params.samplesize,
+        y: value,
+      }));
+      const color = i == 0  ? 'rgb(204, 0, 187)' : this.colorManager.getColor(data.series);
+      chartData.push({
+        metadata: {
+          id: data.metric,
+          label: data.metric,
+          color,
+          viz: 'main',
+          unitsData: {
+          y: 'count',
+          x: 'timestamp'
+          }
+        },
+        data: timeseries
+      });
+    });
 
-  const response = await fetchQueries(params, this.props.vcHosts.map(host => host.id), this.props.metric, this.props.userToken);
-  const chartData = [];
-
-  response.forEach(data => {
-    const timeseries = data.series.map((value, ind) => ({
-      x: params.from + ind * params.samplesize,
-      y: value,
-    }));
-  });
-
-  chartData.push({
-    metadata: {
-      id: data.metric,
-      label: data.metric,
-      color: red,
-      viz: 'main',
-      unitsData: {
-      y: 'count',
-      x: 'timestamp'
-      }
-    },
-    data: timeseries
-  });
-  this.setState({chartData}, () => {
-    this.refresher = setTimeout(() => {
-      this.refreshData();
-    }, 60000);
-  })
+    this.setState({chartData}, () => {
+      this.refresher = setTimeout(() => {
+        this.refreshData();
+      }, 60000);
+    })
   }
 
   async componentDidMount() {

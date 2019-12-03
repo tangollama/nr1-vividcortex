@@ -50,17 +50,10 @@
   padding: .25rem;
 }
 
-.vc-cardrow {
-  .card-body {
-    h2 {
-      font-size: 1em;
-      color: #2cafb8;
+.chartPanel {
+    h1, h2, h3 {
+        margin: 10px;
     }
-  }
-
-  .card {
-    border: none;
-  }
 }
 
 .hostPicker  {
