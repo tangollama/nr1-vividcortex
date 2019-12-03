@@ -10,7 +10,7 @@ import {
   HeadinText
 } from 'nr1';
 import { get } from 'lodash';
-import {VIVIDCORTEX_URL} from '../../CONFIGURE_ME';
+import { VIVIDCORTEX_URL } from '../../CONFIGURE_ME';
 import ConfigureMe from '../../components/configureme';
 import SetupUserToken from '../../components/setup';
 import VCMain from '../../components/main';
@@ -46,7 +46,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
       document: { userToken }
     };
     await UserStorageMutation.mutate(mutation);
-    this.setState({ updated: true }); //eslint-disable-line
+    this.setState({ updated: true }); // eslint-disable-line react/no-unused-state
   }
 
   async setVCHosts(vcHosts, entityGuid) {
@@ -59,7 +59,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
       document: { vcHosts }
     };
     await EntityStorageMutation.mutate(mutation);
-    this.setState({ updated: true }); //eslint-disable-line
+    this.setState({ updated: true }); // eslint-disable-line react/no-unused-state
   }
 
   _initNerdGraphQuery(entityGuid) {

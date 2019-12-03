@@ -33,7 +33,7 @@ export default class VCChart extends React.Component {
 
     const response = await fetchQueries(params, this.props.vcHosts.map(host => host.id), this.props.metric, this.props.userToken);
     const chartData = [];
-    console.log(response);
+    //console.log(response);
     //debugger;
     response.forEach((data, i) => {
       const timeseries = data.series.map((value, ind) => ({
