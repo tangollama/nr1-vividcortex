@@ -15,16 +15,6 @@ export default class ProfilerRow extends React.Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick(evt, href, digest, query) {
-    this.props.nr1.services.tessen.trackUserAction('queryClick', 'VividCortexHostNerdlet', {
-      entity: this.props.entity,
-      entityName: this.props.entity.name,
-      href,
-      title: digest,
-      query
-    })
-  }
-
   componentDidMount() {
     fetchQuery(this.state.queryId).then(query => this.setState({ digest: query.digest }))
   }

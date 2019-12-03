@@ -1,9 +1,8 @@
 import React from 'react'
-import { Table } from 'reactstrap'
 import ProfilerRow from "./row"
 
-export default ({ queries, from, until, hosts, nr1, entity }) => (
-  <Table striped hover>
+export default ({ queries, from, until, vcHosts, entity }) => (
+  <table>
     <thead>
       <tr>
         <th>#</th>
@@ -18,11 +17,10 @@ export default ({ queries, from, until, hosts, nr1, entity }) => (
           query={query}
           from={from}
           until={until}
-          hosts={hosts}
-          nr1={nr1}
+          hosts={vcHosts}
           entity={entity}
         />
       ))}
     </tbody>
-  </Table>
+  </table>
 )

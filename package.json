@@ -11,18 +11,11 @@
     "uuid": "c454eb7e-757c-4b5e-9662-57d10db5eeb9"
   },
   "dependencies": {
-    "bootstrap": "^4.4.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "nr1-bootstrap-theme": "git+https://github.com/newrelic/nr1-bootstrap-theme.git",
-    "plotly": "^1.0.6",
-    "plotly.js": "^1.51.2",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
-    "react-bootstrap-typeahead": "^3.4.7",
-    "react-dom": "^16.6.3",
-    "react-plotly.js": "^2.4.0",
-    "reactstrap": "^8.1.1"
+    "react-dom": "^16.6.3"
   },
   "browserslist": [
     "last 2 versions",
