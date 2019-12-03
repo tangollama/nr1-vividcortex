@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Grid, GridItem, TextField, Button } from 'nr1';
 import VCHeader from './vcHeader';
-import VIVIDCORTEX_URL from '../CONFIGURE_ME';
+import {VIVIDCORTEX_URL} from '../CONFIGURE_ME';
 
 export default class SetupUserToken extends React.PureComponent {
   static propTypes = {

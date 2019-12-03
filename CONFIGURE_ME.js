@@ -5,6 +5,6 @@
 // if you want to ignore changes to this file for git commit/push purposes,
 // try running this:
 // git update-index --assume-unchanged ./CONFIGURE_ME.js
-const VIVIDCORTEX_URL = 'https://newrelic-origami.app.vividcortex.com';
-//const VIVIDCORTEX_URL = 'https://app.vividcortex.com';
-export default VIVIDCORTEX_URL;
+//export const VIVIDCORTEX_URL = null;
+export const VIVIDCORTEX_URL = 'https://newrelic-origami.app.vividcortex.com';
+export const VIVIDCORTEX_API_URL = 'https://app.vividcortex.com';

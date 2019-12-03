@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Button, Spinner, Stack, StackItem } from 'nr1';
 import HostDropdown from './hostDropdown';
+import { VIVIDCORTEX_API_URL } from '../CONFIGURE_ME';
 
 export default class VCHostSelector extends React.Component {
 
@@ -27,7 +28,7 @@ export default class VCHostSelector extends React.Component {
   }
 
   componentDidMount() {
-    return fetch(`https://app.vividcortex.com/api/v2/hosts?from=${moment().subtract("1", "hour").unix()}&until=${moment().unix()}`, {
+    return fetch(`${VIVIDCORTEX_API_URL}/api/v2/hosts?from=${moment().subtract("1", "hour").unix()}&until=${moment().unix()}`, {
       headers: {
         Authorization: `Bearer ${this.props.userToken}`
       }

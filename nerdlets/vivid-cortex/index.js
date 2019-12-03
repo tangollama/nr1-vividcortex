@@ -10,7 +10,7 @@ import {
   HeadinText
 } from 'nr1';
 import { get } from 'lodash';
-import VIVIDCORTEX_URL from '../../CONFIGURE_ME';
+import {VIVIDCORTEX_URL} from '../../CONFIGURE_ME';
 import ConfigureMe from '../../components/configureme';
 import SetupUserToken from '../../components/setup';
 import VCMain from '../../components/main';
