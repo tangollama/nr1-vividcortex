@@ -25,6 +25,7 @@ export default class VCHostSelector extends React.Component {
 
     this.handleOsHostChange = this.handleOsHostChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onReset = this.onReset.bind(this);
   }
 
   componentDidMount() {
@@ -52,9 +53,13 @@ export default class VCHostSelector extends React.Component {
 
   async onSubmit() {
     const { allHosts, selectedOsHost } = this.state;
-    const vcHosts = allHosts.filter(h => h.parent == selectedOsHost.id || h.id == selectedOsHost.id);
-    console.debug(vcHosts);
-    this.props.callbacks.setVCHosts(vcHosts, this.props.entityGuid);
+    if (!selectedOsHost) {
+      this.props.callbacks.setVCHosts(null, this.props.entityGuid);
+    } else {
+      const vcHosts = allHosts.filter(h => h.parent == selectedOsHost.id || h.id == selectedOsHost.id);
+      console.debug(vcHosts);
+      this.props.callbacks.setVCHosts(vcHosts, this.props.entityGuid);
+    }
   }
 
   async onReset() {
@@ -81,7 +86,7 @@ export default class VCHostSelector extends React.Component {
         <HostDropdown title="Hosts" hosts={osHosts} setHost={this.handleOsHostChange}  />
       </StackItem>
       <StackItem style={{margin:'10px'}}>
-        <Button onClick={this.onSubmit} type={Button.TYPE.PRIMARY} disabled={!selectedOsHost}>Apply</Button>
+        <Button onClick={this.onSubmit} type={Button.TYPE.PRIMARY}>Apply</Button>
         <Button onClick={this.onReset} type={Button.TYPE.DESTRUCTIVE} disabled={!selectedOsHost} style={{marginLeft:'10px'}}>Reset Configuration</Button>
       </StackItem>
     </Stack>)

@@ -38,17 +38,18 @@ export default class VividCortexNerdlet extends React.PureComponent {
     this.setState({ openConfig: false });
   }
 
-  setUserToken(userToken) {
+  async setUserToken(userToken) {
     const mutation = {
       actionType: UserStorageMutation.ACTION_TYPE.WRITE_DOCUMENT,
       collection: 'vividcortex',
       documentId: 'userToken',
       document: { userToken }
     };
-    UserStorageMutation.mutate(mutation);
+    await UserStorageMutation.mutate(mutation);
+    this.setState({ updated: true }); //eslint-disable-line
   }
 
-  setVCHosts(vcHosts, entityGuid) {
+  async setVCHosts(vcHosts, entityGuid) {
     // debugger;
     const mutation = {
       entityGuid,
@@ -57,7 +58,8 @@ export default class VividCortexNerdlet extends React.PureComponent {
       documentId: 'vcHosts',
       document: { vcHosts }
     };
-    EntityStorageMutation.mutate(mutation);
+    await EntityStorageMutation.mutate(mutation);
+    this.setState({ updated: true }); //eslint-disable-line
   }
 
   _initNerdGraphQuery(entityGuid) {
