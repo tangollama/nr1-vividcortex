@@ -1,17 +1,5 @@
-
 @import '~bootstrap/dist/css/bootstrap.min.css';
-
-.centered {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -50px;
-    margin-left: -100px;
-}
-.configBtn {
-    float: right;
-    margin-top: 20px;
-}
+@import "~nr1-bootstrap-theme/dist/main.css";
 .row {
     width: 100%;
     display: flex;
@@ -75,4 +63,8 @@
     .card {
         border: none;
     }
+}
+
+.hostPicker  {
+  width: 200px;
 }

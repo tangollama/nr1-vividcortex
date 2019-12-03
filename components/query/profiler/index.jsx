@@ -8,8 +8,8 @@ export default class QueryProfiler extends React.Component {
   static propTypes = {
     from: PropTypes.number,
     until: PropTypes.number,
-    hosts: PropTypes.object,
-    key: PropTypes.object,
+    vcHosts: PropTypes.array,
+    userToken: PropTypes.string.isRequired,
     nr1: PropTypes.object,
     entity: PropTypes.object
   }
@@ -34,14 +34,15 @@ export default class QueryProfiler extends React.Component {
   }
 
   refreshData() {
-    const { from, until, hosts } = this.props
-    const allHostsIDs = hosts.map(host => host.id);
+    const { from, until, vcHosts } = this.props
+    const allHostsIDs = vcHosts.map(host => host.id);
 
     // Fetch the top queries by time
     fetchQueries(
       { from, until, limit: 20, rank: 1, separateHosts: 0 },
       allHostsIDs,
-      "host.queries.*.*.time_us"
+      "host.queries.*.*.time_us",
+      this.props.userToken
     ).then(queries => {
       const allQueryIds = queries.map(query => query.id)
 
@@ -110,8 +111,6 @@ export default class QueryProfiler extends React.Component {
   }
 
   render() {
-    const { from, until, hosts } = this.props
-
     const { queries } = this.state
 
     return (

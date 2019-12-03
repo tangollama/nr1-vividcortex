@@ -1,0 +1,13 @@
+{
+  "schemaType": "NERDLET",
+  "id": "vividcortex",
+  "displayName": "VividCortex [PoC]",
+  "description": "VividCortex integration aligning Infrastructure hosts with databases",
+  "entities": [
+    {
+      "domain": "INFRA",
+      "type": "HOST"
+    }
+  ],
+  "actionCategory": "monitor"
+}
