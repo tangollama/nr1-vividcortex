@@ -1,5 +1,14 @@
 import React from 'react';
-import { NerdGraphQuery, UserStorageMutation, EntityStorageMutation, NerdletStateContext, PlatformStateContext, Spinner, BlockText, HeadinText } from 'nr1';
+import {
+  NerdGraphQuery,
+  UserStorageMutation,
+  EntityStorageMutation,
+  NerdletStateContext,
+  PlatformStateContext,
+  Spinner,
+  BlockText,
+  HeadinText
+} from 'nr1';
 import { get } from 'lodash';
 import VIVIDCORTEX_URL from '../../CONFIGURE_ME';
 import ConfigureMe from '../../components/configureme';
@@ -8,14 +17,13 @@ import VCMain from '../../components/main';
 import { getTimeInterval } from '../../lib/time';
 
 export default class VividCortexNerdlet extends React.PureComponent {
-
   constructor(props) {
     super(props);
     this.callbacks = {
       setUserToken: this.setUserToken.bind(this),
       setVCHosts: this.setVCHosts.bind(this),
       openConfig: this.openConfig.bind(this),
-      closeConfig: this.closeConfig.bind(this),
+      closeConfig: this.closeConfig.bind(this)
     };
     this.state = {
       openConfig: false
@@ -35,23 +43,21 @@ export default class VividCortexNerdlet extends React.PureComponent {
       actionType: UserStorageMutation.ACTION_TYPE.WRITE_DOCUMENT,
       collection: 'vividcortex',
       documentId: 'userToken',
-      document: { userToken },
+      document: { userToken }
     };
     UserStorageMutation.mutate(mutation);
-    this.setState({ userToken });
   }
 
   setVCHosts(vcHosts, entityGuid) {
-    //debugger;
+    // debugger;
     const mutation = {
       entityGuid,
       actionType: EntityStorageMutation.ACTION_TYPE.WRITE_DOCUMENT,
       collection: 'vividcortex',
       documentId: 'vcHosts',
-      document: { vcHosts },
+      document: { vcHosts }
     };
     EntityStorageMutation.mutate(mutation);
-    this.setState({ vcHosts });
   }
 
   _initNerdGraphQuery(entityGuid) {
@@ -67,49 +73,76 @@ export default class VividCortexNerdlet extends React.PureComponent {
           }
         }
       }
-    }`
+    }`;
   }
 
   render() {
     if (!VIVIDCORTEX_URL) {
-      return <ConfigureMe />
+      return <ConfigureMe />;
     }
-    return (<PlatformStateContext.Consumer>
-      {platformUrlState => (<NerdletStateContext.Consumer>
-        {nerdletUrlState => {
-          const { timeRange } = platformUrlState;
-          const { from, until } = getTimeInterval(timeRange);
-          const { entityGuid } = nerdletUrlState;
-          return <NerdGraphQuery fetchPolicyType={NerdGraphQuery.FETCH_POLICY_TYPE.NETWORK_ONLY} query={this._initNerdGraphQuery(entityGuid)}>
-            {({loading, error, data}) => {
-              if (loading) {
-                return <Spinner fillContainer />
-              }
-              if (error) {
-                return <div>
-                  <HeadinText>An unexpected error occurred</HeadinText>
-                  <BlockText>{error.message}</BlockText>
-                </div>
-              }
-              console.log(data);
-              const userToken = get(data, 'actor.nerdStorage.userToken.userToken');
-              const vcHosts = get(data, 'actor.entity.nerdStorage.vcHosts.vcHosts');
-              const osHost = vcHosts ? vcHosts.find(h => h.type == "os") : null;
-              const entity = get(data, 'actor.entity');
+    return (
+      <PlatformStateContext.Consumer>
+        {platformUrlState => (
+          <NerdletStateContext.Consumer>
+            {nerdletUrlState => {
+              const { timeRange } = platformUrlState;
+              const { from, until } = getTimeInterval(timeRange);
+              const { entityGuid } = nerdletUrlState;
+              return (
+                <NerdGraphQuery
+                  fetchPolicyType={
+                    NerdGraphQuery.FETCH_POLICY_TYPE.NETWORK_ONLY
+                  }
+                  query={this._initNerdGraphQuery(entityGuid)}
+                >
+                  {({ loading, error, data }) => {
+                    if (loading) {
+                      return <Spinner fillContainer />;
+                    }
+                    if (error) {
+                      return (
+                        <div>
+                          <HeadinText>An unexpected error occurred</HeadinText>
+                          <BlockText>{error.message}</BlockText>
+                        </div>
+                      );
+                    }
+                    // console.log(data);
+                    const userToken = get(
+                      data,
+                      'actor.nerdStorage.userToken.userToken'
+                    );
+                    const vcHosts = get(
+                      data,
+                      'actor.entity.nerdStorage.vcHosts.vcHosts'
+                    );
+                    const osHost = vcHosts
+                      ? vcHosts.find(h => h.type === 'os')
+                      : null;
+                    const entity = get(data, 'actor.entity');
 
-              const propSet = {
-                osHost, vcHosts, userToken, from, until, entityGuid, entity,
-                callbacks: this.callbacks,
-                openConfig: this.state.openConfig
-              };
-              if (!userToken) {
-                return <SetupUserToken {...propSet} />
-              }
-              return <VCMain {...propSet} />
+                    const propSet = {
+                      osHost,
+                      vcHosts,
+                      userToken,
+                      from,
+                      until,
+                      entityGuid,
+                      entity,
+                      callbacks: this.callbacks,
+                      openConfig: this.state.openConfig
+                    };
+                    if (!userToken) {
+                      return <SetupUserToken {...propSet} />;
+                    }
+                    return <VCMain {...propSet} />;
+                  }}
+                </NerdGraphQuery>
+              );
             }}
-          </NerdGraphQuery>
-        }}
-      </NerdletStateContext.Consumer>)}
-    </PlatformStateContext.Consumer>);
+          </NerdletStateContext.Consumer>
+        )}
+      </PlatformStateContext.Consumer>
+    );
   }
 }
