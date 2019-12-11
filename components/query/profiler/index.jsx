@@ -18,7 +18,6 @@ export default class QueryProfiler extends React.Component {
     super(props)
 
     this.state = {
-      hosts: props.vcHosts,
       queries: null
     }
     this.timeout = null
