@@ -7,12 +7,11 @@ import { VIVIDCORTEX_URL } from '../CONFIGURE_ME';
 export default class SetupUserToken extends React.PureComponent {
   static propTypes = {
     userToken: PropTypes.string,
-    entity: PropTypes.object.isRequired,
     callbacks: PropTypes.object.isRequired
   };
 
   renderUserTokenInput() {
-    const { userToken } = this.state || {};
+    const { userToken } = this.state;
     const { setUserToken } = this.props.callbacks;
     return (
       <div style={{ minWidth: '500px', padding: '20px' }}>
