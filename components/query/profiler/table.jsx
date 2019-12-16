@@ -1,13 +1,15 @@
-import React from 'react'
-import ProfilerRow from "./row"
+import React from 'react';
+import PropTypes from 'prop-types';
 
-export default ({ queries, from, until, vcHosts, entity }) => (
-  <table style={{ width: '95%'}}>
+import ProfilerRow from './row';
+
+const Table = ({ queries, from, until, vcHosts, entity }) => (
+  <table style={{ width: '95%' }}>
     <thead>
       <tr>
         <th>#</th>
         <th>Query</th>
-        <th></th>
+        <th />
       </tr>
     </thead>
     <tbody>
@@ -23,4 +25,14 @@ export default ({ queries, from, until, vcHosts, entity }) => (
       ))}
     </tbody>
   </table>
-)
+);
+
+Table.propTypes = {
+  queries: PropTypes.array,
+  from: PropTypes.number,
+  until: PropTypes.number,
+  vcHosts: PropTypes.array,
+  entity: PropTypes.object
+};
+
+export default Table;

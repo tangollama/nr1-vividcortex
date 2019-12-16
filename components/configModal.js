@@ -12,14 +12,18 @@ export default class ConfigModal extends React.PureComponent {
     entity: PropTypes.object.isRequired,
     callbacks: PropTypes.object.isRequired,
     openConfig: PropTypes.bool
-  }
+  };
 
   render() {
     return (
-      <Modal hidden={!this.props.openConfig}
-        onClose={() => { this.props.callbacks.closeConfig(); }}>
+      <Modal
+        hidden={!this.props.openConfig}
+        onClose={() => {
+          this.props.callbacks.closeConfig();
+        }}
+      >
         <VCHostSelector {...this.props} />
       </Modal>
-    )
+    );
   }
 }
