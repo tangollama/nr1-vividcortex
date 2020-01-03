@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Grid, GridItem, HeadingText, ChartGroup } from 'nr1';
-import VCHeader from './VCHeader';
+import VCHeader from './vcHeader';
 import VCChart from './vcChart';
 import VCHostSelector from './vcHostSelector';
 import ConfigModal from './configModal';
