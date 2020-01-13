@@ -5,6 +5,12 @@ import VCHeader from './vcHeader';
 import { VIVIDCORTEX_URL } from '../CONFIGURE_ME';
 
 export default class SetupUserToken extends React.PureComponent {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   static propTypes = {
     userToken: PropTypes.string,
     callbacks: PropTypes.object.isRequired
