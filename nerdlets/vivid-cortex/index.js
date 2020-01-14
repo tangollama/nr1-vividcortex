@@ -7,7 +7,7 @@ import {
   PlatformStateContext,
   Spinner,
   BlockText,
-  HeadinText
+  HeadingText
 } from 'nr1';
 import { get } from 'lodash';
 import { VIVIDCORTEX_URL } from '../../CONFIGURE_ME';
@@ -39,13 +39,22 @@ export default class VividCortexNerdlet extends React.PureComponent {
   }
 
   async setUserToken(userToken) {
-    const mutation = {
-      actionType: UserStorageMutation.ACTION_TYPE.WRITE_DOCUMENT,
-      collection: 'vividcortex',
-      documentId: 'userToken',
-      document: { userToken }
-    };
-    await UserStorageMutation.mutate(mutation);
+    if (userToken) {
+      const mutation = {
+        actionType: UserStorageMutation.ACTION_TYPE.WRITE_DOCUMENT,
+        collection: 'vividcortex',
+        documentId: 'userToken',
+        document: { userToken }
+      };
+      await UserStorageMutation.mutate(mutation);
+    } else {
+      const mutation = {
+        actionType: UserStorageMutation.ACTION_TYPE.DELETE_DOCUMENT,
+        collection: 'vividcortex',
+        documentId: 'userToken'
+      };
+      await UserStorageMutation.mutate(mutation);
+    }
     this.setState({ updated: true }); // eslint-disable-line react/no-unused-state
   }
 
@@ -55,9 +64,14 @@ export default class VividCortexNerdlet extends React.PureComponent {
       entityGuid,
       actionType: EntityStorageMutation.ACTION_TYPE.WRITE_DOCUMENT,
       collection: 'vividcortex',
-      documentId: 'vcHosts',
-      document: { vcHosts }
+      documentId: 'vcHosts'
     };
+    if (!vcHosts) {
+      mutation.actionType = EntityStorageMutation.ACTION_TYPE.DELETE_DOCUMENT
+    } else {
+      mutation.document = { vcHosts };
+    }
+    console.debug(mutation);
     await EntityStorageMutation.mutate(mutation);
     this.setState({ updated: true }); // eslint-disable-line react/no-unused-state
   }
@@ -92,9 +106,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
               const { entityGuid } = nerdletUrlState;
               return (
                 <NerdGraphQuery
-                  fetchPolicyType={
-                    NerdGraphQuery.FETCH_POLICY_TYPE.NETWORK_ONLY
-                  }
+                  fetchPolicyType={NerdGraphQuery.FETCH_POLICY_TYPE.NO_CACHE}
                   query={this._initNerdGraphQuery(entityGuid)}
                 >
                   {({ loading, error, data }) => {
@@ -104,12 +116,12 @@ export default class VividCortexNerdlet extends React.PureComponent {
                     if (error) {
                       return (
                         <div>
-                          <HeadinText>An unexpected error occurred</HeadinText>
+                          <HeadingText>An unexpected error occurred</HeadingText>
                           <BlockText>{error.message}</BlockText>
                         </div>
                       );
                     }
-                    // console.log(data);
+                    console.log(data);
                     const userToken = get(
                       data,
                       'actor.nerdStorage.userToken.userToken'
@@ -122,6 +134,11 @@ export default class VividCortexNerdlet extends React.PureComponent {
                       ? vcHosts.find(h => h.type === 'os')
                       : null;
                     const entity = get(data, 'actor.entity');
+                    if (!entity) {
+                      return <>
+                    <HeadingText>Unable to load entity for ${entityGuid}</HeadingText>
+                      </>
+                    }
 
                     const propSet = {
                       osHost,
