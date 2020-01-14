@@ -13,6 +13,7 @@ export default class SetupUserToken extends React.PureComponent {
 
   static propTypes = {
     userToken: PropTypes.string,
+    hideButton: PropTypes.bool,
     callbacks: PropTypes.object.isRequired
   };
 
@@ -64,11 +65,11 @@ export default class SetupUserToken extends React.PureComponent {
   }
 
   render() {
-    const { userToken } = this.props;
+    const { userToken, hideButton } = this.props;
     return (
       <Grid>
         <GridItem columnSpan={12}>
-          <VCHeader hideButton={!userToken} />
+          <VCHeader hideButton={hideButton || !userToken} />
         </GridItem>
         <GridItem>
           {!userToken && this.renderUserTokenInput()}

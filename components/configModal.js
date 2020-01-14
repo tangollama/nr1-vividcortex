@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'nr1';
 import VCHostSelector from './vcHostSelector';
+import SetupUserToken from './setup';
 
 export default class ConfigModal extends React.PureComponent {
   static propTypes = {
@@ -22,6 +23,7 @@ export default class ConfigModal extends React.PureComponent {
           this.props.callbacks.closeConfig();
         }}
       >
+        <SetupUserToken {...this.props} hideButton={true} />
         <VCHostSelector {...this.props} />
       </Modal>
     );
