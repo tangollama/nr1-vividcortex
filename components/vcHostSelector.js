@@ -27,7 +27,7 @@ export default class VCHostSelector extends React.Component {
     this.onReset = this.onReset.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     return fetch(
       `${VIVIDCORTEX_API_URL}/api/v2/hosts?from=${moment()
         .subtract('1', 'hour')
@@ -78,6 +78,7 @@ export default class VCHostSelector extends React.Component {
     if (!osHosts) {
       return <Spinner fillContainer />;
     }
+    // debugger;
     return (
       <Stack fullWidth directionType={Stack.DIRECTION_TYPE.VERTICAL}>
         {osHost && (
