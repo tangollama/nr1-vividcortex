@@ -41,7 +41,7 @@ export default class VCHostSelector extends React.Component {
       .then(response => response.json())
       .then(response => response.data)
       .then(hosts => {
-        //console.debug('vc returned', hosts);
+        // console.debug('vc returned', hosts);
         const osHosts = hosts.filter(host => host.type === 'os');
         this.setState({ allHosts: hosts, osHosts });
       });
@@ -78,7 +78,7 @@ export default class VCHostSelector extends React.Component {
     if (!osHosts) {
       return <Spinner fillContainer />;
     }
-    //debugger;
+    // debugger;
     return (
       <Stack fullWidth directionType={Stack.DIRECTION_TYPE.VERTICAL}>
         {osHost && (

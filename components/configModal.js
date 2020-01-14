@@ -23,7 +23,7 @@ export default class ConfigModal extends React.PureComponent {
           this.props.callbacks.closeConfig();
         }}
       >
-        <SetupUserToken {...this.props} hideButton={true} />
+        <SetupUserToken {...this.props} hideButton />
         <VCHostSelector {...this.props} />
       </Modal>
     );

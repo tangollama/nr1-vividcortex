@@ -67,11 +67,11 @@ export default class VividCortexNerdlet extends React.PureComponent {
       documentId: 'vcHosts'
     };
     if (!vcHosts) {
-      mutation.actionType = EntityStorageMutation.ACTION_TYPE.DELETE_DOCUMENT
+      mutation.actionType = EntityStorageMutation.ACTION_TYPE.DELETE_DOCUMENT;
     } else {
       mutation.document = { vcHosts };
     }
-    console.debug(mutation);
+    // console.debug(mutation); //eslint-disable-line no-console
     await EntityStorageMutation.mutate(mutation);
     this.setState({ updated: true }); // eslint-disable-line react/no-unused-state
   }
@@ -116,12 +116,14 @@ export default class VividCortexNerdlet extends React.PureComponent {
                     if (error) {
                       return (
                         <div>
-                          <HeadingText>An unexpected error occurred</HeadingText>
+                          <HeadingText>
+                            An unexpected error occurred
+                          </HeadingText>
                           <BlockText>{error.message}</BlockText>
                         </div>
                       );
                     }
-                    console.log(data);
+                    console.log(data); // eslint-disable-line no-console
                     const userToken = get(
                       data,
                       'actor.nerdStorage.userToken.userToken'
@@ -135,9 +137,13 @@ export default class VividCortexNerdlet extends React.PureComponent {
                       : null;
                     const entity = get(data, 'actor.entity');
                     if (!entity) {
-                      return <>
-                    <HeadingText>Unable to load entity for ${entityGuid}</HeadingText>
-                      </>
+                      return (
+                        <>
+                          <HeadingText>
+                            Unable to load entity for ${entityGuid}
+                          </HeadingText>
+                        </>
+                      );
                     }
 
                     const propSet = {
