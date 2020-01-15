@@ -55,7 +55,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
       };
       await UserStorageMutation.mutate(mutation);
     }
-    this.setState({ updated: true }); // eslint-disable-line react/no-unused-state
+    this.setState({ updated: new Date().getDate() }); // eslint-disable-line react/no-unused-state
   }
 
   async setVCHosts(vcHosts, entityGuid) {
@@ -73,16 +73,16 @@ export default class VividCortexNerdlet extends React.PureComponent {
     }
     // console.debug(mutation); //eslint-disable-line no-console
     await EntityStorageMutation.mutate(mutation);
-    this.setState({ updated: true }); // eslint-disable-line react/no-unused-state
+    this.setState({ updated: new Date().getDate() }); // eslint-disable-line react/no-unused-state
   }
 
-  _initNerdGraphQuery(entityGuid) {
-    return `{
+  _initNerdGraphQuery() {
+    return `query($entityGuid: String!) {
       actor {
         nerdStorage {
           userToken: document(collection: "vividcortex", documentId: "userToken")
         }
-        entity(guid: "${entityGuid}") {
+        entity(guid: $entityGuid) {
           name domain type account { name id }
           nerdStorage {
             vcHosts: document(collection: "vividcortex", documentId: "vcHosts")
@@ -107,7 +107,8 @@ export default class VividCortexNerdlet extends React.PureComponent {
               return (
                 <NerdGraphQuery
                   fetchPolicyType={NerdGraphQuery.FETCH_POLICY_TYPE.NO_CACHE}
-                  query={this._initNerdGraphQuery(entityGuid)}
+                  variables={{ entityGuid }}
+                  query={this._initNerdGraphQuery()}
                 >
                   {({ loading, error, data }) => {
                     if (loading) {
@@ -123,7 +124,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
                         </div>
                       );
                     }
-                    console.log(data); // eslint-disable-line no-console
+                    console.log("render:", data); // eslint-disable-line no-console
                     const userToken = get(
                       data,
                       'actor.nerdStorage.userToken.userToken'
