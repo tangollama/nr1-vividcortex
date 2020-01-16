@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/newrelic/nr1-vividcortex/compare/v1.0.0...v1.0.1) (2020-01-16)
+
+
+### Bug Fixes
+
+* workaround for the cahching issue with the nerdStorage config. Technicall addresses [#4](https://github.com/newrelic/nr1-vividcortex/issues/4) but not in an optimal way. ([a7b60f1](https://github.com/newrelic/nr1-vividcortex/commit/a7b60f12a1c8af6975a4c6e089799cd38d1fb64f))
+
 # 1.0.0 (2020-01-13)
 
 
