@@ -74,9 +74,9 @@ export default class VividCortexNerdlet extends React.PureComponent {
     } else {
       mutation.document = { vcHosts };
     }
-    console.log(mutation); //eslint-disable-line no-console
+    // console.log(mutation); // eslint-disable-line no-console
     await EntityStorageMutation.mutate(mutation);
-    console.log("mutation complete");
+    // console.log('mutation complete'); // eslint-disable-line no-console
     this.setState({ openConfig: false, updated }); // eslint-disable-line react/no-unused-state
   }
 
@@ -114,7 +114,10 @@ export default class VividCortexNerdlet extends React.PureComponent {
               const { entityGuid } = nerdletUrlState;
               return (
                 <NerdGraphQuery
-                  variables={{ entityGuid, nrql: `SELECT * FROM TRANSACTION SINCE ${now} LIMIT 1`}}
+                  variables={{
+                    entityGuid,
+                    nrql: `SELECT * FROM TRANSACTION SINCE ${now} LIMIT 1`
+                  }}
                   query={this._initNerdGraphQuery()}
                 >
                   {({ loading, error, data }) => {
@@ -131,7 +134,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
                         </div>
                       );
                     }
-                    console.log("render:", data); // eslint-disable-line no-console
+                    // console.log('render:', data); // eslint-disable-line no-console
                     const userToken = get(
                       data,
                       'actor.nerdStorage.userToken.userToken'

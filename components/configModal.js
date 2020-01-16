@@ -24,8 +24,8 @@ export default class ConfigModal extends React.PureComponent {
         }}
       >
         <VCHostSelector {...this.props} />
-        <div style={{ marginTop: '50px'}}>
-          <SetupUserToken {...this.props} hideHeader={true} />
+        <div style={{ marginTop: '50px' }}>
+          <SetupUserToken {...this.props} hideHeader />
         </div>
       </Modal>
     );
