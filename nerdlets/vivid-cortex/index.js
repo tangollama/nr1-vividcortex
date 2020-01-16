@@ -39,12 +39,13 @@ export default class VividCortexNerdlet extends React.PureComponent {
   }
 
   async setUserToken(userToken) {
+    const updated = new Date().getTime();
     if (userToken) {
       const mutation = {
         actionType: UserStorageMutation.ACTION_TYPE.WRITE_DOCUMENT,
         collection: 'vividcortex',
         documentId: 'userToken',
-        document: { userToken }
+        document: { userToken, updated }
       };
       await UserStorageMutation.mutate(mutation);
     } else {
@@ -55,11 +56,13 @@ export default class VividCortexNerdlet extends React.PureComponent {
       };
       await UserStorageMutation.mutate(mutation);
     }
-    this.setState({ updated: new Date().getDate() }); // eslint-disable-line react/no-unused-state
+    this.setState({ updated }); // eslint-disable-line react/no-unused-state
   }
 
   async setVCHosts(vcHosts, entityGuid) {
     // debugger;
+    const updated = new Date().getTime();
+
     const mutation = {
       entityGuid,
       actionType: EntityStorageMutation.ACTION_TYPE.WRITE_DOCUMENT,
@@ -69,11 +72,12 @@ export default class VividCortexNerdlet extends React.PureComponent {
     if (!vcHosts) {
       mutation.actionType = EntityStorageMutation.ACTION_TYPE.DELETE_DOCUMENT;
     } else {
-      mutation.document = { vcHosts };
+      mutation.document = { vcHosts, updated };
     }
-    // console.debug(mutation); //eslint-disable-line no-console
+    console.log(mutation); //eslint-disable-line no-console
     await EntityStorageMutation.mutate(mutation);
-    this.setState({ updated: new Date().getDate() }); // eslint-disable-line react/no-unused-state
+    console.log("mutation complete");
+    this.setState({ updated }); // eslint-disable-line react/no-unused-state
   }
 
   _initNerdGraphQuery() {
@@ -106,7 +110,6 @@ export default class VividCortexNerdlet extends React.PureComponent {
               const { entityGuid } = nerdletUrlState;
               return (
                 <NerdGraphQuery
-                  fetchPolicyType={NerdGraphQuery.FETCH_POLICY_TYPE.NO_CACHE}
                   variables={{ entityGuid }}
                   query={this._initNerdGraphQuery()}
                 >

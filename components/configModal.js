@@ -23,8 +23,10 @@ export default class ConfigModal extends React.PureComponent {
           this.props.callbacks.closeConfig();
         }}
       >
-        <SetupUserToken {...this.props} hideButton />
         <VCHostSelector {...this.props} />
+        <div style={{ marginTop: '50px'}}>
+          <SetupUserToken {...this.props} hideHeader={true} />
+        </div>
       </Modal>
     );
   }
