@@ -42,8 +42,11 @@ export default class VCHostSelector extends React.Component {
       .then(response => response.data)
       .then(hosts => {
         // console.debug('vc returned', hosts);
-        const osHosts = hosts.filter(host => host.type === 'os');
-        this.setState({ allHosts: hosts, osHosts });
+        const allHosts = hosts.map(h => {
+          return { id: h.id, name: h.name, type: h.type, parent: h.parent };
+        });
+        const osHosts = allHosts.filter(host => host.type === 'os');
+        this.setState({ allHosts, osHosts });
       });
   }
 
@@ -55,7 +58,8 @@ export default class VCHostSelector extends React.Component {
     }
   }
 
-  async onSubmit() {
+  async onSubmit(e) {
+    e.preventDefault();
     const { allHosts, selectedOsHost } = this.state;
     if (!selectedOsHost) {
       this.props.callbacks.setVCHosts(null, this.props.entityGuid);
@@ -68,7 +72,8 @@ export default class VCHostSelector extends React.Component {
     }
   }
 
-  async onReset() {
+  async onReset(e) {
+    e.preventDefault();
     this.setState({ selectedOsHost: null });
   }
 

@@ -39,6 +39,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
   }
 
   async setUserToken(userToken) {
+    const updated = new Date().getTime();
     if (userToken) {
       const mutation = {
         actionType: UserStorageMutation.ACTION_TYPE.WRITE_DOCUMENT,
@@ -55,11 +56,13 @@ export default class VividCortexNerdlet extends React.PureComponent {
       };
       await UserStorageMutation.mutate(mutation);
     }
-    this.setState({ updated: true }); // eslint-disable-line react/no-unused-state
+    this.setState({ openConfig: false, updated }); // eslint-disable-line react/no-unused-state
   }
 
   async setVCHosts(vcHosts, entityGuid) {
     // debugger;
+    const updated = new Date().getTime();
+
     const mutation = {
       entityGuid,
       actionType: EntityStorageMutation.ACTION_TYPE.WRITE_DOCUMENT,
@@ -71,21 +74,25 @@ export default class VividCortexNerdlet extends React.PureComponent {
     } else {
       mutation.document = { vcHosts };
     }
-    // console.debug(mutation); //eslint-disable-line no-console
+    // console.log(mutation); // eslint-disable-line no-console
     await EntityStorageMutation.mutate(mutation);
-    this.setState({ updated: true }); // eslint-disable-line react/no-unused-state
+    // console.log('mutation complete'); // eslint-disable-line no-console
+    this.setState({ openConfig: false, updated }); // eslint-disable-line react/no-unused-state
   }
 
-  _initNerdGraphQuery(entityGuid) {
-    return `{
+  _initNerdGraphQuery() {
+    return `query($entityGuid: String!, $nrql: String!) {
       actor {
         nerdStorage {
           userToken: document(collection: "vividcortex", documentId: "userToken")
         }
-        entity(guid: "${entityGuid}") {
+        entity(guid: $entityGuid) {
           name domain type account { name id }
           nerdStorage {
             vcHosts: document(collection: "vividcortex", documentId: "vcHosts")
+          }
+          nrdbQuery(nrql: $nrql) {
+            results
           }
         }
       }
@@ -96,6 +103,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
     if (!VIVIDCORTEX_URL) {
       return <ConfigureMe />;
     }
+    const now = new Date().getTime();
     return (
       <PlatformStateContext.Consumer>
         {platformUrlState => (
@@ -106,8 +114,11 @@ export default class VividCortexNerdlet extends React.PureComponent {
               const { entityGuid } = nerdletUrlState;
               return (
                 <NerdGraphQuery
-                  fetchPolicyType={NerdGraphQuery.FETCH_POLICY_TYPE.NO_CACHE}
-                  query={this._initNerdGraphQuery(entityGuid)}
+                  variables={{
+                    entityGuid,
+                    nrql: `SELECT * FROM TRANSACTION SINCE ${now} LIMIT 1`
+                  }}
+                  query={this._initNerdGraphQuery()}
                 >
                   {({ loading, error, data }) => {
                     if (loading) {
@@ -123,7 +134,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
                         </div>
                       );
                     }
-                    console.log(data); // eslint-disable-line no-console
+                    // console.log('render:', data); // eslint-disable-line no-console
                     const userToken = get(
                       data,
                       'actor.nerdStorage.userToken.userToken'
