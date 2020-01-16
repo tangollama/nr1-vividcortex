@@ -45,7 +45,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
         actionType: UserStorageMutation.ACTION_TYPE.WRITE_DOCUMENT,
         collection: 'vividcortex',
         documentId: 'userToken',
-        document: { userToken, updated }
+        document: { userToken }
       };
       await UserStorageMutation.mutate(mutation);
     } else {
@@ -56,7 +56,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
       };
       await UserStorageMutation.mutate(mutation);
     }
-    this.setState({ updated }); // eslint-disable-line react/no-unused-state
+    this.setState({ openConfig: false, updated }); // eslint-disable-line react/no-unused-state
   }
 
   async setVCHosts(vcHosts, entityGuid) {
@@ -72,16 +72,16 @@ export default class VividCortexNerdlet extends React.PureComponent {
     if (!vcHosts) {
       mutation.actionType = EntityStorageMutation.ACTION_TYPE.DELETE_DOCUMENT;
     } else {
-      mutation.document = { vcHosts, updated };
+      mutation.document = { vcHosts };
     }
     console.log(mutation); //eslint-disable-line no-console
     await EntityStorageMutation.mutate(mutation);
     console.log("mutation complete");
-    this.setState({ updated }); // eslint-disable-line react/no-unused-state
+    this.setState({ openConfig: false, updated }); // eslint-disable-line react/no-unused-state
   }
 
   _initNerdGraphQuery() {
-    return `query($entityGuid: String!) {
+    return `query($entityGuid: String!, $nrql: String!) {
       actor {
         nerdStorage {
           userToken: document(collection: "vividcortex", documentId: "userToken")
@@ -90,6 +90,9 @@ export default class VividCortexNerdlet extends React.PureComponent {
           name domain type account { name id }
           nerdStorage {
             vcHosts: document(collection: "vividcortex", documentId: "vcHosts")
+          }
+          nrdbQuery(nrql: $nrql) {
+            results
           }
         }
       }
@@ -100,6 +103,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
     if (!VIVIDCORTEX_URL) {
       return <ConfigureMe />;
     }
+    const now = new Date().getTime();
     return (
       <PlatformStateContext.Consumer>
         {platformUrlState => (
@@ -110,7 +114,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
               const { entityGuid } = nerdletUrlState;
               return (
                 <NerdGraphQuery
-                  variables={{ entityGuid }}
+                  variables={{ entityGuid, nrql: `SELECT * FROM TRANSACTION SINCE ${now} LIMIT 1`}}
                   query={this._initNerdGraphQuery()}
                 >
                   {({ loading, error, data }) => {
