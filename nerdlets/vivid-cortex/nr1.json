@@ -1,7 +1,7 @@
 {
   "schemaType": "NERDLET",
   "id": "vividcortex",
-  "displayName": "VividCortex",
+  "displayName": "VividCortex (fix)",
   "description": "VividCortex integration aligning Infrastructure hosts with databases",
   "entities": [
     {

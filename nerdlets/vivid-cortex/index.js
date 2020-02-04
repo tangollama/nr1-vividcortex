@@ -15,6 +15,7 @@ import ConfigureMe from '../../components/configureme';
 import SetupUserToken from '../../components/setup';
 import VCMain from '../../components/main';
 import { getTimeInterval } from '../../lib/time';
+import { NerdGraphError } from '@newrelic/nr1-community';
 
 export default class VividCortexNerdlet extends React.PureComponent {
   constructor(props) {
@@ -81,7 +82,7 @@ export default class VividCortexNerdlet extends React.PureComponent {
   }
 
   _initNerdGraphQuery() {
-    return `query($entityGuid: String!, $nrql: String!) {
+    return `query($entityGuid: String!) {
       actor {
         nerdStorage {
           userToken: document(collection: "vividcortex", documentId: "userToken")
@@ -90,9 +91,6 @@ export default class VividCortexNerdlet extends React.PureComponent {
           name domain type account { name id }
           nerdStorage {
             vcHosts: document(collection: "vividcortex", documentId: "vcHosts")
-          }
-          nrdbQuery(nrql: $nrql) {
-            results
           }
         }
       }
@@ -114,25 +112,16 @@ export default class VividCortexNerdlet extends React.PureComponent {
               const { entityGuid } = nerdletUrlState;
               return (
                 <NerdGraphQuery
-                  variables={{
-                    entityGuid,
-                    nrql: `SELECT * FROM TRANSACTION SINCE ${now} LIMIT 1`
-                  }}
+                  variables={{ entityGuid }}
                   query={this._initNerdGraphQuery()}
+                  fetchPolicyType={NerdGraphQuery.FETCH_POLICY_TYPE.NO_CACHE}
                 >
                   {({ loading, error, data }) => {
                     if (loading) {
                       return <Spinner fillContainer />;
                     }
                     if (error) {
-                      return (
-                        <div>
-                          <HeadingText>
-                            An unexpected error occurred
-                          </HeadingText>
-                          <BlockText>{error.message}</BlockText>
-                        </div>
-                      );
+                      return <NerdGraphError error={error} />
                     }
                     // console.log('render:', data); // eslint-disable-line no-console
                     const userToken = get(
